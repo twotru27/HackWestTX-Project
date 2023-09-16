@@ -5,7 +5,7 @@ mod market;
 
 pub use error::AppError;
 
-use std::sync::Arc;
+use std::{fmt::Display, sync::Arc};
 
 use axum::{
     extract::State,
@@ -13,7 +13,7 @@ use axum::{
 };
 use log::warn;
 use mongodb::{
-    options::{ClientOptions, Credential},
+    options::{AuthMechanism, ClientOptions, Credential},
     Client,
 };
 
@@ -24,16 +24,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let ip = env_default("UNIKET_HOST", "0.0.0.0");
     let port = env_default("UNIKET_PORT", "3000");
 
-    let db_address = env_default("UNIKET_DATABASE", "mongodb://localhost:27017");
     let token = env("UNIKET_DATABASE_TOKEN").expect("token to be provided");
+    let db_address = env_default(
+        "UNIKET_DATABASE",
+        format!(
+            "mongodb+srv://uniket:{token}@uniket.8j6mykm.mongodb.net/?retryWrites=true&w=majority"
+        ),
+    );
 
     let client = Client::with_options({
         let mut options = ClientOptions::parse_async(db_address).await?;
-        options.credential = Some(Credential {
-            mechanism: Some(mongodb::options::AuthMechanism::MongoDbX509),
-            source: Some(token),
-            ..Default::default()
-        });
+        options.credential = Some(
+            Credential::builder()
+                .mechanism(AuthMechanism::Plain)
+                .password(token)
+                .build(),
+        );
         options
     })?;
 
@@ -58,10 +64,10 @@ fn env(p: &str) -> Option<String> {
     std::env::var(p).ok()
 }
 
-fn env_default(p: &str, default: &str) -> String {
+fn env_default(p: &str, default: impl Into<String> + Display) -> String {
     env(p).unwrap_or_else(|| {
         warn!("using default value ({default}) for {p}");
-        default.to_string()
+        default.into()
     })
 }
 
