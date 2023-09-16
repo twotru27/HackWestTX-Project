@@ -16,6 +16,14 @@ pub struct User {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Org {
     name: String,
+    domain: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum Category {
+    CourseMaterial,
+    Electronics,
+    Other,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
