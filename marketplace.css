@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+/*this section of code is written to display the background, logo, and menu section off the website*/
+body {
+    width: 100%;
+    height: 100vh;
+    background-image:url("background.jpg");
+    background-size: cover;
+    background-position: center;
+}
+.NavigationBar {
+    width: 85%;
+    margin: auto;
+    padding: 25px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.logo {
+    width: 300px;
+    cursor: pointer;
+}
+.NavigationBar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 40px;
+    position: relative;
+}
+.NavigationBar ul li a{
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+}
+/*this section off code shows user a pointing indication when they hover over a menu*/
+.NavigationBar ul li::after{
+    content: '';
+    height: 6px;
+    width: 0;
+    background: red;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.NavigationBar ul li:hover::after{
+    width: 100%;
+}
+.Intro{
+    width:100%;
+    position: absolute;
+    top: 60%;
+    text-align: center;
+    color: #000000;
+}
+.Intro h1{
+    font-size: 50px;
+    font-family: Times New Roman;
+}
+.Intro p{
+    margin-size: 20px auto
+    font-size: 30px;
+    font-family: Times New Roman;
+    line-height: 25px;
+}
+button{
+    margine-size:10px;
+    text-align: center;
+    font-style: Times New Roman;
+    font-weight: 200px;
+    margin: 20px;
+    border-radius: 15px 0;
+    width: 200px;
+    padding 20px 20px;
+    text-transform: uppercase;
+    background-color: #000000;
+    color: red;
+
+
+}
