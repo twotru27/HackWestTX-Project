@@ -1,4 +1,7 @@
-use mongodb::bson::{oid::ObjectId, DateTime};
+use mongodb::{
+    bson::{oid::ObjectId, DateTime},
+    gridfs,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -23,6 +26,19 @@ pub struct Org {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct OrgResources {
     org: ObjectId,
+    pdfs: Vec<ObjectId>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct OrgPdf {
+    title: String,
+    link: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct OrgSite {
+    title: String,
+    link: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
