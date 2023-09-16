@@ -12,7 +12,10 @@ use axum::{
     routing::{any, get},
 };
 use log::warn;
-use mongodb::{options::ClientOptions, Client};
+use mongodb::{
+    options::{ClientOptions, Credential},
+    Client,
+};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -22,12 +25,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let port = env_default("UNIKET_PORT", "3000");
 
     let db_address = env_default("UNIKET_DATABASE", "mongodb://localhost:27017");
+    let token = env("UNIKET_DATABASE_TOKEN").expect("token to be provided");
 
-    let client = Client::with_options(ClientOptions::parse_async(db_address).await?)?;
+    let client = Client::with_options({
+        let mut options = ClientOptions::parse_async(db_address).await?;
+        options.credential = Some(Credential {
+            mechanism: Some(mongodb::options::AuthMechanism::MongoDbX509),
+            source: Some(token),
+            ..Default::default()
+        });
+        options
+    })?;
 
-    let state = State(Arc::new(ServerState {
+    let state = Arc::new(ServerState {
         db_conn: client.database("uniket"),
-    }));
+    });
 
     let routes = axum::Router::new()
         .route("/", any(index::index))
