@@ -5,6 +5,11 @@ use serde::{Deserialize, Serialize};
 pub struct User {
     name: String,
     email: String,
+    password_hash: String,
+    major: Option<String>,
+    minor: Option<String>,
+    classification: Option<String>,
+    phone_number: String,
     org: ObjectId,
 }
 
