@@ -1,4 +1,4 @@
-use mongodb::bson::oid::ObjectId;
+use mongodb::bson::{oid::ObjectId, DateTime};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -29,15 +29,24 @@ pub enum Category {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SaleListing {
     by: ObjectId,
+    category: Category,
     title: String,
     price: Price,
     desc: String,
     wher: String,
+    posted_at: DateTime,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CompletedSale {
+    seller: ObjectId,
+    buyer: ObjectId,
+    listing: SaleListing,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub enum Price {
     Free,
     Ask,
-    Determined(String),
+    Set(String),
 }
