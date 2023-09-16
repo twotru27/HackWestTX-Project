@@ -17,6 +17,12 @@ pub struct User {
 pub struct Org {
     name: String,
     domain: String,
+    users: Vec<ObjectId>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct OrgResources {
+    org: ObjectId,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

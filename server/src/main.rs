@@ -13,13 +13,14 @@ use axum::{
 };
 use log::warn;
 use mongodb::{
-    options::{AuthMechanism, ClientOptions, Credential},
+    options::{AuthMechanism, ClientOptions, Credential, ServerApi, ServerApiVersion},
     Client,
 };
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
+    dotenvy::dotenv().ok();
 
     let ip = env_default("UNIKET_HOST", "0.0.0.0");
     let port = env_default("UNIKET_PORT", "3000");
@@ -27,9 +28,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let token = env("UNIKET_DATABASE_TOKEN").expect("token to be provided");
     let db_address = env_default(
         "UNIKET_DATABASE",
-        format!(
-            "mongodb+srv://uniket:{token}@uniket.8j6mykm.mongodb.net/?retryWrites=true&w=majority"
-        ),
+        dbg!(format!(
+            "mongodb+srv://uniket:{}@uniket.8j6mykm.mongodb.net/?retryWrites=true&w=majority",
+            token
+        )),
     );
 
     let client = Client::with_options({
@@ -40,15 +42,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .password(token)
                 .build(),
         );
+        options.server_api = ServerApi::builder()
+            .version(ServerApiVersion::V1)
+            .build()
+            .into();
         options
     })?;
+
+    client
+        .database("uniket")
+        .create_collection("listings", None)
+        .await?;
 
     let state = Arc::new(ServerState {
         db_conn: client.database("uniket"),
     });
 
     let routes = axum::Router::new()
-        .route("/", any(index::index))
         .route("/get_listings/:amt", get(market::list))
         .with_state(state);
 
@@ -71,6 +81,6 @@ fn env_default(p: &str, default: impl Into<String> + Display) -> String {
     })
 }
 
-struct ServerState {
+pub struct ServerState {
     db_conn: mongodb::Database,
 }
