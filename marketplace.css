@@ -5,13 +5,15 @@
 /*this section of code is written to display the background, logo, and menu section off the website*/
 body {
     width: 100%;
-    height: 100vh;
+    height: 75vh;
     background-image:url("background.jpg");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-color: black;
 }
 .NavigationBar {
-    width: 85%;
+    width: 90%;
     margin: auto;
     padding: 25px 0;
     display: flex;
@@ -26,7 +28,7 @@ body {
 .NavigationBar ul li {
     list-style: none;
     display: inline-block;
-    margin: 0 40px;
+    margin:0 40px;
     position: relative;
 }
 .NavigationBar ul li a{
@@ -47,35 +49,66 @@ body {
 .NavigationBar ul li:hover::after{
     width: 100%;
 }
+/*setting the spacing for the category margins*/
 .Intro{
-    width:100%;
-    position: absolute;
-    top: 60%;
-    text-align: center;
+    margin: 70px 0;
+}
+.Int-3{
+    flex-basis:60%;
+    min-width: 40px;
+    margin-bottom: -100px;
+}
+.Int-3 img{
+    width: "400";
+    padding-left: 100px;
+
+}
+.container{
+    position:absolute;
+    margin-bottom: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    bottom:-200px;
+    display: inline-block;
+    background-blend-mode: normal;
+}
+.row{
+    display: flex
+}
+.column{
+    flex:40%;
+    padding:30px;
+    column-gap:30px;
+}
+.Int-2{
+    flex-basis: 25%;
+    padding: 10px;
+    min-width: 200px;
+    margin-bottom: 50px;
+}
+.Int-2 img{
+    width: 100%;
+}
+.welcome{
+    width: 90%;
     color: #000000;
-}
-.Intro h1{
-    font-size: 50px;
-    font-family: Times New Roman;
-}
-.Intro p{
-    margin-size: 20px auto
-    font-size: 30px;
-    font-family: Times New Roman;
-    line-height: 25px;
-}
-button{
-    margine-size:10px;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
     text-align: center;
-    font-style: Times New Roman;
-    font-weight: 200px;
-    margin: 20px;
-    border-radius: 15px 0;
-    width: 200px;
-    padding 20px 20px;
-    text-transform: uppercase;
-    background-color: #000000;
-    color: red;
-
-
 }
+
+.welcome button{
+    background-color:#000000;
+    font-family:Times New Roman;
+    color:red;
+    border-radius: 50px 0;
+    padding:13px 30px;
+}
+.welcome h1{
+    font-family: Times New Roman;
+    font-size: 30px;
+    font-color: #000000;
+}
+
