@@ -8,7 +8,7 @@ Uniket will then send the user a verification link to their edu email.
 
 Uniket is built by the structure.html and marketplace.css files 
 
-Website contains CSS, html, Jsto, and Rust programming language.
+Website contains CSS, html, javascript, and Html programming language.
 The data from profile creation is included. 
  
 
